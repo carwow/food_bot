@@ -25,7 +25,6 @@
 
   <div class="form-group">
     <%= multiple_select f, :food_sources_ids, @food_sources %>
-    <%#= multiple_select f, :food_sources_ids, ["Place1": 1, "Place2": 2] %>
   </div>
 
   <div class="form-group">

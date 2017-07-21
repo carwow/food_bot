@@ -11,7 +11,6 @@ defmodule FoodBot.EventController do
 
   def new(conn, _params) do
     changeset = Event.changeset(%Event{})
-    # food_sources = Repo.all from fs in FoodSource, select: { fs.name, fs.id }
     food_sources = Enum.map(Repo.all(FoodSource), &{&1.name, &1.id})
 
     conn
