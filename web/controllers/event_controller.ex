@@ -19,7 +19,8 @@ defmodule FoodBot.EventController do
   end
 
   def create(conn, %{"event" => event_params}) do
-    changeset = Event.changeset(%Event{}, event_params)
+    food_sources = Repo.all(from fs in FoodBot.FoodSource, where: fs.id in ^event_params["food_sources_ids"])
+    changeset = Event.changeset(%Event{}, event_params, food_sources)
 
     case Repo.insert(changeset) do
       {:ok, _event} ->
