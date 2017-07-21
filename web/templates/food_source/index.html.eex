@@ -1,0 +1,28 @@
+<h2>Listing food sources</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Url</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for food_source <- @food_sources do %>
+    <tr>
+      <td><%= food_source.name %></td>
+      <td><%= food_source.url %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: food_source_path(@conn, :show, food_source), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: food_source_path(@conn, :edit, food_source), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: food_source_path(@conn, :delete, food_source), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New food source", to: food_source_path(@conn, :new) %>

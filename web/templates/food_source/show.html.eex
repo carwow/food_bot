@@ -1,0 +1,18 @@
+<h2>Show food source</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @food_source.name %>
+  </li>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @food_source.url %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: food_source_path(@conn, :edit, @food_source) %>
+<%= link "Back", to: food_source_path(@conn, :index) %>
