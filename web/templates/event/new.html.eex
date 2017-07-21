@@ -1,6 +1,7 @@
 <h2>New event</h2>
 
 <%= render "form.html", changeset: @changeset,
+                        food_sources: @food_sources,
                         action: event_path(@conn, :create) %>
 
 <%= link "Back", to: event_path(@conn, :index) %>

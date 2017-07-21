@@ -2,6 +2,7 @@ defmodule FoodBot.EventController do
   use FoodBot.Web, :controller
 
   alias FoodBot.Event
+  alias FoodBot.FoodSource
 
   def index(conn, _params) do
     events = Repo.all(Event)
@@ -10,7 +11,12 @@ defmodule FoodBot.EventController do
 
   def new(conn, _params) do
     changeset = Event.changeset(%Event{})
-    render(conn, "new.html", changeset: changeset)
+    # food_sources = Repo.all from fs in FoodSource, select: { fs.name, fs.id }
+    food_sources = Enum.map(Repo.all(FoodSource), &{&1.name, &1.id})
+
+    conn
+      |> assign(:food_sources, food_sources)
+      |> render("new.html", changeset: changeset)
   end
 
   def create(conn, %{"event" => event_params}) do

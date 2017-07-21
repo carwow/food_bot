@@ -5,6 +5,8 @@ defmodule FoodBot.FoodSource do
     field :name, :string
     field :url, :string
 
+    many_to_many :events, Event, join_through: FoodSourcesEvents
+
     timestamps()
   end
 
