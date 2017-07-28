@@ -1,0 +1,9 @@
+<h2>New order</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        event: @event,
+                        events: @events,
+                        food_source_id: nil,
+                        action: order_path(@conn, :create) %>
+
+<%= link "Back", to: order_path(@conn, :index) %>

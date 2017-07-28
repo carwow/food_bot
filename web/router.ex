@@ -20,6 +20,7 @@ defmodule FoodBot.Router do
 
     resources "/food_sources", FoodSourceController
     resources "/events", EventController
+    resources "/orders", OrderController
   end
 
   # Other scopes may use custom stacks.

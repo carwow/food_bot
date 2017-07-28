@@ -3,4 +3,5 @@
 <ul>
   <li><%= link("Food Sources", to: '/food_sources') %></li>
   <li><%= link("Events", to: '/events') %></li>
+  <li><%= link("Orders", to: '/orders') %></li>
 </ul>

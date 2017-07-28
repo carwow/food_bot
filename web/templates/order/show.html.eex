@@ -1,0 +1,28 @@
+<h2>Show order</h2>
+
+<ul>
+
+  <li>
+    <strong>Event:</strong>
+    <%= @order.event.name %>
+  </li>
+
+  <li>
+    <strong>Food source:</strong>
+    <%= @order.food_source.name %>
+  </li>
+
+  <li>
+    <strong>User name:</strong>
+    <%= @order.user_name %>
+  </li>
+
+  <li>
+    <strong>Order:</strong>
+    <%= @order.order %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: order_path(@conn, :edit, @order) %>
+<%= link "Back", to: order_path(@conn, :index) %>
