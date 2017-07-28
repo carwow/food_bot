@@ -1,6 +1,7 @@
 <h2>New event</h2>
 
 <%= render "form.html", changeset: @changeset,
+                        selected_food_source_ids: [],
                         food_sources: @food_sources,
                         action: event_path(@conn, :create) %>
 

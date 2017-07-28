@@ -11,11 +11,8 @@ defmodule FoodBot.EventController do
 
   def new(conn, _params) do
     changeset = Event.changeset(%Event{})
-    food_sources = Enum.map(Repo.all(FoodSource), &{&1.name, &1.id})
 
-    conn
-      |> assign(:food_sources, food_sources)
-      |> render("new.html", changeset: changeset)
+    render(conn, "new.html", food_sources: fetch_all_food_sources, changeset: changeset)
   end
 
   def create(conn, %{"event" => event_params}) do
@@ -28,7 +25,7 @@ defmodule FoodBot.EventController do
         |> put_flash(:info, "Event created successfully.")
         |> redirect(to: event_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, food_sources: fetch_all_food_sources)
     end
   end
 
@@ -39,13 +36,17 @@ defmodule FoodBot.EventController do
 
   def edit(conn, %{"id" => id}) do
     event = Repo.get!(Event, id)
+      |> Repo.preload(:food_sources)
     changeset = Event.changeset(event)
-    render(conn, "edit.html", event: event, changeset: changeset)
+
+    render(conn, "edit.html", event: event, changeset: changeset, food_sources: fetch_all_food_sources, selected_food_source_ids: Enum.map(event.food_sources, &(&1.id)))
   end
 
   def update(conn, %{"id" => id, "event" => event_params}) do
     event = Repo.get!(Event, id)
-    changeset = Event.changeset(event, event_params)
+      |> Repo.preload(:food_sources)
+    food_sources = Repo.all(from fs in FoodBot.FoodSource, where: fs.id in ^event_params["food_sources_ids"])
+    changeset = Event.changeset(event, event_params, food_sources)
 
     case Repo.update(changeset) do
       {:ok, event} ->
@@ -53,7 +54,7 @@ defmodule FoodBot.EventController do
         |> put_flash(:info, "Event updated successfully.")
         |> redirect(to: event_path(conn, :show, event))
       {:error, changeset} ->
-        render(conn, "edit.html", event: event, changeset: changeset)
+        render(conn, "edit.html", event: event, changeset: changeset, food_sources: fetch_all_food_sources)
     end
   end
 
@@ -67,5 +68,10 @@ defmodule FoodBot.EventController do
     conn
     |> put_flash(:info, "Event deleted successfully.")
     |> redirect(to: event_path(conn, :index))
+  end
+
+  defp fetch_all_food_sources do
+    Repo.all(FoodSource)
+      |> Enum.map &{&1.name, &1.id}
   end
 end

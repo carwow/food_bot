@@ -6,7 +6,7 @@ defmodule FoodBot.Event do
     field :date, Ecto.DateTime
     field :location, :string
 
-    many_to_many :food_sources, FoodBot.FoodSource, join_through: FoodBot.FoodSourcesEvents
+    many_to_many :food_sources, FoodBot.FoodSource, join_through: FoodBot.FoodSourcesEvents, on_replace: :delete
 
     timestamps()
   end

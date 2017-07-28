@@ -1,6 +1,8 @@
 <h2>Edit event</h2>
 
 <%= render "form.html", changeset: @changeset,
+                        selected_food_source_ids: @selected_food_source_ids,
+                        food_sources: @food_sources,
                         action: event_path(@conn, :update, @event) %>
 
 <%= link "Back", to: event_path(@conn, :index) %>
