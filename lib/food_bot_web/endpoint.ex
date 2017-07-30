@@ -1,7 +1,7 @@
-defmodule FoodBot.Endpoint do
+defmodule FoodBotWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :food_bot
 
-  socket "/socket", FoodBot.UserSocket
+  socket "/socket", FoodBotWeb.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -38,5 +38,5 @@ defmodule FoodBot.Endpoint do
     key: "_food_bot_key",
     signing_salt: "zcuji/k0"
 
-  plug FoodBot.Router
+  plug FoodBotWeb.Router
 end

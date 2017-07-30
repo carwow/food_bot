@@ -1,4 +1,4 @@
-defmodule FoodBot.EventController do
+defmodule FoodBotWeb.EventController do
   use FoodBot.Web, :controller
 
   alias FoodBot.Event

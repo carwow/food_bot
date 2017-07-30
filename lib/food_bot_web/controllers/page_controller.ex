@@ -1,4 +1,4 @@
-defmodule FoodBot.PageController do
+defmodule FoodBotWeb.PageController do
   use FoodBot.Web, :controller
 
   def index(conn, _params) do

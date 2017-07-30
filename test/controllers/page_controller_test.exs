@@ -1,5 +1,5 @@
 defmodule FoodBot.PageControllerTest do
-  use FoodBot.ConnCase
+  use FoodBotWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

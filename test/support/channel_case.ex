@@ -1,4 +1,4 @@
-defmodule FoodBot.ChannelCase do
+defmodule FoodBotWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -27,7 +27,7 @@ defmodule FoodBot.ChannelCase do
 
 
       # The default endpoint for testing
-      @endpoint FoodBot.Endpoint
+      @endpoint FoodBotWeb.Endpoint
     end
   end
 

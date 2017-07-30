@@ -11,7 +11,7 @@ defmodule FoodBot do
       # Start the Ecto repository
       supervisor(FoodBot.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(FoodBot.Endpoint, []),
+      supervisor(FoodBotWeb.Endpoint, []),
       # Start your own worker by calling: FoodBot.Worker.start_link(arg1, arg2, arg3)
       # worker(FoodBot.Worker, [arg1, arg2, arg3]),
     ]
@@ -20,12 +20,5 @@ defmodule FoodBot do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: FoodBot.Supervisor]
     Supervisor.start_link(children, opts)
-  end
-
-  # Tell Phoenix to update the endpoint configuration
-  # whenever the application is updated.
-  def config_change(changed, _new, removed) do
-    FoodBot.Endpoint.config_change(changed, removed)
-    :ok
   end
 end

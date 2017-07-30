@@ -1,4 +1,4 @@
-defmodule FoodBot.ErrorView do
+defmodule FoodBotWeb.ErrorView do
   use FoodBot.Web, :view
 
   def render("404.html", _assigns) do

@@ -1,4 +1,4 @@
-defmodule FoodBot.Gettext do
+defmodule FoodBotWeb.Gettext do
   @moduledoc """
   A module providing Internationalization with a gettext-based API.
 

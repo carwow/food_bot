@@ -1,4 +1,4 @@
-defmodule FoodBot.ConnCase do
+defmodule FoodBotWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -25,10 +25,10 @@ defmodule FoodBot.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import FoodBot.Router.Helpers
+      import FoodBotWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint FoodBot.Endpoint
+      @endpoint FoodBotWeb.Endpoint
     end
   end
 

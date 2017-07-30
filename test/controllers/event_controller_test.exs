@@ -1,5 +1,5 @@
 defmodule FoodBot.EventControllerTest do
-  use FoodBot.ConnCase
+  use FoodBotWeb.ConnCase
 
   alias FoodBot.Event
   @valid_attrs %{date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, location: "some content", name: "some content"}

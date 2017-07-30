@@ -1,4 +1,4 @@
-defmodule FoodBot.ErrorHelpers do
+defmodule FoodBotWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """

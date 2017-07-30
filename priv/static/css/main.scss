@@ -1,0 +1,21 @@
+$blue: #00a4ff;
+$light-blue: #4dbfff;
+$white: #ffffff;
+$black: #212224;
+$green: #2ecc71;
+
+html, body {
+  color: $black;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+ul {
+  list-style: none;
+}
+
+.container {
+  max-width: 1024px;
+  margin: auto;
+}
+

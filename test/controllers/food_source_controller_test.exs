@@ -1,5 +1,5 @@
 defmodule FoodBot.FoodSourceControllerTest do
-  use FoodBot.ConnCase
+  use FoodBotWeb.ConnCase
 
   alias FoodBot.FoodSource
   @valid_attrs %{name: "some content", url: "some content"}

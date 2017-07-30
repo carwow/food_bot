@@ -148,7 +148,7 @@ var __makeRelativeRequire = function(require, mappings, pref) {
     return require(name);
   }
 };
-require.register("web/static/js/app.js", function(exports, require, module) {
+require.register("app.js", function(exports, require, module) {
 'use strict';
 
 (function () {
@@ -163,8 +163,8 @@ require.register("web/static/js/app.js", function(exports, require, module) {
 });
 
 ;require.register("___globals___", function(exports, require, module) {
-  
+
 });})();require('___globals___');
 
-require('web/static/js/app');
+require('app');
 //# sourceMappingURL=app.js.map

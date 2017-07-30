@@ -1,4 +1,4 @@
-defmodule FoodBot.FoodSourceController do
+defmodule FoodBotWeb.FoodSourceController do
   use FoodBot.Web, :controller
 
   alias FoodBot.FoodSource

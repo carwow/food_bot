@@ -1,5 +1,5 @@
 defmodule FoodBot.OrderControllerTest do
-  use FoodBot.ConnCase
+  use FoodBotWeb.ConnCase
 
   alias FoodBot.Order
   @valid_attrs %{order: "some content", user_name: "some content"}

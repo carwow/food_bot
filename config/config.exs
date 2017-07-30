@@ -10,10 +10,10 @@ config :food_bot,
   ecto_repos: [FoodBot.Repo]
 
 # Configures the endpoint
-config :food_bot, FoodBot.Endpoint,
+config :food_bot, FoodBotWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "yY7ahIXGw3aTyGSV6s9zrhEkCstdli5H5g+7ldi7CX/etk3ZZnJX03Y/nC/NRmim",
-  render_errors: [view: FoodBot.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: FoodBotWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: FoodBot.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

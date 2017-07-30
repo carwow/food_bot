@@ -1,4 +1,4 @@
-defmodule FoodBot.UserSocket do
+defmodule FoodBotWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels

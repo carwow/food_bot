@@ -1,4 +1,4 @@
-defmodule FoodBot.Router do
+defmodule FoodBotWeb.Router do
   use FoodBot.Web, :router
 
   pipeline :browser do
@@ -13,7 +13,7 @@ defmodule FoodBot.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", FoodBot do
+  scope "/", FoodBotWeb do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index

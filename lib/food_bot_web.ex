@@ -28,20 +28,20 @@ defmodule FoodBot.Web do
 
   def controller do
     quote do
-      use Phoenix.Controller
+      use Phoenix.Controller, namespace: FoodBotWeb
 
       alias FoodBot.Repo
       import Ecto
       import Ecto.Query
 
-      import FoodBot.Router.Helpers
-      import FoodBot.Gettext
+      import FoodBotWeb.Router.Helpers
+      import FoodBotWeb.Gettext
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "web/templates"
+      use Phoenix.View, root: "lib/food_bot_web/templates", namespace: FoodBotWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
@@ -49,9 +49,9 @@ defmodule FoodBot.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import FoodBot.Router.Helpers
-      import FoodBot.ErrorHelpers
-      import FoodBot.Gettext
+      import FoodBotWeb.Router.Helpers
+      import FoodBotWeb.ErrorHelpers
+      import FoodBotWeb.Gettext
     end
   end
 
@@ -68,7 +68,7 @@ defmodule FoodBot.Web do
       alias FoodBot.Repo
       import Ecto
       import Ecto.Query
-      import FoodBot.Gettext
+      import FoodBotWeb.Gettext
     end
   end
 
