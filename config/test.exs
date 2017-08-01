@@ -12,8 +12,8 @@ config :logger, level: :warn
 # Configure your database
 config :food_bot, FoodBot.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "carwow",
+  password: "carwow",
   database: "food_bot_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
