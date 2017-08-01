@@ -1,10 +1,8 @@
-defmodule Bot do
-  use Application
+defmodule FoodBot.SlackBot do
   use Slack
 
-  def start(_type, _args) do
-    IO.puts "Starting..."
-    Slack.Bot.start_link(Bot, %{}, Application.get_env(:bot, :token))
+  def start_link() do
+    Slack.Bot.start_link(__MODULE__, %{}, Application.get_env(:food_bot, :slack_bot_token))
   end
 
   def handle_event(message = %{type: "message"}, slack, state) do

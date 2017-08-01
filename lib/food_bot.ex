@@ -14,6 +14,7 @@ defmodule FoodBot do
       supervisor(FoodBotWeb.Endpoint, []),
       # Start your own worker by calling: FoodBot.Worker.start_link(arg1, arg2, arg3)
       # worker(FoodBot.Worker, [arg1, arg2, arg3]),
+      worker(FoodBot.SlackBot, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

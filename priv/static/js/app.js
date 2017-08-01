@@ -163,8 +163,8 @@ require.register("app.js", function(exports, require, module) {
 });
 
 ;require.register("___globals___", function(exports, require, module) {
-
+  
 });})();require('___globals___');
 
-require('app');
+require('js/app');
 //# sourceMappingURL=app.js.map
