@@ -17,10 +17,18 @@ defmodule FoodBot.SlackBot do
 
   def handle_command(cmd, args \\ [], state \\ %{})
   def handle_command("join_event", [name], state) do
-    {
-      "You joined event: " <> name,
-      Map.put(state, :current_event, name)
-    }
+    case FoodBot.Repo.get_by(FoodBot.Event, name: name) do
+      nil ->
+        {
+          "Sorry. Can't find event: #{name}",
+          state
+        }
+      event ->
+        {
+          "You joined event: " <> name,
+          Map.put(state, :current_event, event)
+        }
+    end
   end
   def handle_command("join_event", _, state) do
     {
