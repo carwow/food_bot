@@ -1,6 +1,8 @@
 defmodule FoodBot.SlackBot do
   use Slack
 
+  alias FoodBot.{Repo, Event}
+
   def start_link() do
     Slack.Bot.start_link(__MODULE__, %{}, Application.get_env(:food_bot, :slack_bot_token))
   end
@@ -17,7 +19,7 @@ defmodule FoodBot.SlackBot do
 
   def handle_command(cmd, args \\ [], state \\ %{})
   def handle_command("join_event", [name], state) do
-    case FoodBot.Repo.get_by(FoodBot.Event, name: name) do
+    case Repo.get_by(Event, name: name) do
       nil ->
         {
           "Sorry. Can't find event: #{name}",
