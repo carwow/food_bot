@@ -11,17 +11,40 @@ defmodule FoodBot.SlackBot do
   def handle_event(%{user: me}, %{me: %{id: me}}, state), do: {:ok, state}
   def handle_event(%{subtype: "bot_message"}, _, state), do: {:ok, state}
   def handle_event(message = %{type: "message"}, slack, state) do
-    [cmd | args] = String.split message.text
+    [cmd | rest] = message.text
+                   |> String.trim
+                   |> String.split(~r/\s+/, parts: 2)
+
     {reply, new_state} = cmd
                        |> String.downcase
-                       |> handle_command(args, state[message.user] || %{})
+                       |> handle_command(Enum.at(rest, 0), state[message.user] || %{})
+
     send_message(reply, message.channel, slack)
+
     {:ok, Map.put(state, message.user, new_state)}
   end
   def handle_event(_, _, state), do: {:ok, state}
 
-  def handle_command(cmd, args \\ [], state \\ %{})
-  def handle_command("join_event", [name], state) do
+  def latest_events_text do
+    Event
+    |> order_by(desc: :inserted_at)
+    |> limit(5)
+    |> Repo.all
+    |> Enum.map(&(" - #{&1.name}"))
+    |> Enum.join("\n")
+  end
+
+  def handle_command(cmd, rest \\ nil, state \\ %{})
+  def handle_command("join_event", nil, state) do
+    {
+      """
+      Sorry, you didn't provide an event name. Is it one of these?
+      #{latest_events_text()}
+      """,
+      state
+    }
+  end
+  def handle_command("join_event", name, state) do
     event = Event
             |> preload(:food_sources)
             |> where(name: ^name)
@@ -30,17 +53,10 @@ defmodule FoodBot.SlackBot do
 
     case event do
       nil ->
-        latest_events_text = Event
-                             |> order_by(desc: :inserted_at)
-                             |> limit(5)
-                             |> Repo.all
-                             |> Enum.map(&(" - #{&1.name}"))
-                             |> Enum.join("\n")
-
         {
           """
-          Sorry, I can't find event "#{name}". Is it one of these:
-          #{latest_events_text}
+          Sorry, I can't find event "#{name}". Is it one of these?
+          #{latest_events_text()}
           """,
           state
         }
@@ -58,12 +74,6 @@ defmodule FoodBot.SlackBot do
           Map.put(state, :event, event)
         }
     end
-  end
-  def handle_command("join_event", _, state) do
-    {
-      "The format is `join_event NAME`",
-      state
-    }
   end
   def handle_command("current_event", _, state = %{event: event}) do
     {

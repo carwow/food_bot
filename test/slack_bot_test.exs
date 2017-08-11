@@ -21,7 +21,7 @@ defmodule FoodBot.SlackBotTest do
     }
 
     techLunch = Repo.insert! %Event{
-      name: "TechLunch",
+      name: "Tech Lunch",
       food_sources: [sushiPlace, misterLasagna]
     }
 
@@ -35,9 +35,9 @@ defmodule FoodBot.SlackBotTest do
   end
 
   test "join_event command: adds event to state", context do
-    assert SlackBot.handle_command("join_event", ["TechLunch"]) == {
+    assert SlackBot.handle_command("join_event", "Tech Lunch") == {
       """
-      You joined event "TechLunch". You can order from:
+      You joined event "Tech Lunch". You can order from:
        - SushiPlace: http://www.youmesushi.com/
        - MisterLasagna: http://misterlasagna.co.uk/our-menu#main-lasagna-dishes
       """, %{event: context[:techLunch]}
@@ -45,26 +45,31 @@ defmodule FoodBot.SlackBotTest do
   end
 
   test "join_event command: event not found" do
-    assert SlackBot.handle_command("join_event", ["DataLunch"]) == {
+    assert SlackBot.handle_command("join_event", "Data Lunch") == {
       """
-      Sorry, I can't find event "DataLunch". Is it one of these:
-       - TechLunch
+      Sorry, I can't find event "Data Lunch". Is it one of these?
+       - Tech Lunch
       """,
       %{}
     }
   end
 
   test "join_event command: no event name" do
-    assert SlackBot.handle_command("join_event", []) == {
-      "The format is `join_event NAME`", %{}
+    assert SlackBot.handle_command("join_event") == {
+      """
+      Sorry, you didn't provide an event name. Is it one of these?
+       - Design Lunch
+       - Tech Lunch
+      """,
+      %{}
     }
   end
 
   test "current_event command: event in state" do
-    {_, state} = SlackBot.handle_command("join_event", ["TechLunch"])
+    {_, state} = SlackBot.handle_command("join_event", "Tech Lunch")
 
     assert SlackBot.handle_command("current_event", [], state) == {
-      "You are ordering for event: TechLunch", state
+      "You are ordering for event: Tech Lunch", state
     }
   end
 
