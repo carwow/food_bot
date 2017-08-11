@@ -1,7 +1,7 @@
 defmodule FoodBot.SlackBot do
   use Slack
 
-  alias FoodBot.{Repo, Event}
+  alias FoodBot.{Repo, Event, Order}
   import Ecto.Query
 
   def start_link() do
@@ -17,7 +17,10 @@ defmodule FoodBot.SlackBot do
 
     {reply, new_state} = cmd
                        |> String.downcase
-                       |> handle_command(Enum.at(rest, 0), state[message.user] || %{})
+                       |> handle_command(
+                         Enum.at(rest, 0),
+                         state[message.user] || %{user: slack.users[message.user]}
+                       )
 
     send_message(reply, message.channel, slack)
 
@@ -78,8 +81,24 @@ defmodule FoodBot.SlackBot do
   def handle_command("order", nil, state) do
     { "Sorry, you didn't provide an order.", state }
   end
-  def handle_command("order", _text, _state = %{event: _event}) do
-    raise "TODO"
+  def handle_command("order", text, state = %{event: event, user: %{name: user_name}}) do
+    case Enum.count event.food_sources do
+      0 -> raise "TODO"
+      1 ->
+        {status, _} = Repo.insert %Order{
+          event: event,
+          food_source: Enum.at(event.food_sources, 0),
+          order: text,
+          user_name: user_name
+        }
+
+        case status do
+          :ok -> { "Your order has been taken. Thank you.", state }
+          :error -> { "Something went wrong while saving your order. :(", state }
+        end
+
+      _ -> raise "TODO"
+    end
   end
   def handle_command("order", _, state) do
     {

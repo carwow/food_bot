@@ -8,7 +8,7 @@ defmodule FoodBot.SlackBotTest do
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
 
-    _japaneseCanteen = Repo.insert! %FoodSource{name: "Japanese Canteen"}
+    Repo.insert! %FoodSource{name: "Japanese Canteen"}
 
     sushiPlace = Repo.insert! %FoodSource{
       name: "Sushi Place",
@@ -23,6 +23,11 @@ defmodule FoodBot.SlackBotTest do
     techLunch = Repo.insert! %Event{
       name: "Tech Lunch",
       food_sources: [sushiPlace, misterLasagna]
+    }
+
+    Repo.insert! %Event{
+      name: "Design Lunch",
+      food_sources: [misterLasagna]
     }
 
     [techLunch: techLunch]
@@ -48,6 +53,7 @@ defmodule FoodBot.SlackBotTest do
     assert SlackBot.handle_command("join_event", "Data Lunch") == {
       """
       Sorry, I can't find event "Data Lunch". Is it one of these?
+       - Design Lunch
        - Tech Lunch
       """,
       %{}
@@ -79,6 +85,16 @@ defmodule FoodBot.SlackBotTest do
   test "order command: no order" do
     assert SlackBot.handle_command("order") == {
       "Sorry, you didn't provide an order.", %{}
+    }
+  end
+
+  test "order command: single food source" do
+    {_, state} = SlackBot.handle_command("join_event", "Design Lunch")
+
+    state = Map.put state, :user, %{name: "pedro"}
+
+    assert SlackBot.handle_command("order", "Regular Funghi Lasagna", state) == {
+      "Your order has been taken. Thank you.", state
     }
   end
 end
