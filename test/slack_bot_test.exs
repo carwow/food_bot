@@ -34,9 +34,17 @@ defmodule FoodBot.SlackBotTest do
     }
   end
 
+  def join_tech_lunch_event do
+    Repo.insert! %Event{name: "TechLunch"}
+    {_, state} = SlackBot.handle_command("join_event", ["TechLunch"])
+    state
+  end
+
   test "current_event command: event in state" do
-    assert SlackBot.handle_command("current_event", [], %{current_event: "TechLunch"}) == {
-      "You are ordering for event: TechLunch", %{current_event: "TechLunch"}
+    state = join_tech_lunch_event()
+
+    assert SlackBot.handle_command("current_event", [], state) == {
+      "You are ordering for event: TechLunch", state
     }
   end
 

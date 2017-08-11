@@ -40,7 +40,7 @@ defmodule FoodBot.SlackBot do
   end
   def handle_command("current_event", _, state = %{current_event: current_event}) do
     {
-      "You are ordering for event: " <> current_event,
+      "You are ordering for event: " <> current_event.name,
       state
     }
   end
