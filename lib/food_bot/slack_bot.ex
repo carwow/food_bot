@@ -2,6 +2,7 @@ defmodule FoodBot.SlackBot do
   use Slack
 
   alias FoodBot.{Repo, Event}
+  import Ecto.Query
 
   def start_link() do
     Slack.Bot.start_link(__MODULE__, %{}, Application.get_env(:food_bot, :slack_bot_token))
@@ -19,15 +20,29 @@ defmodule FoodBot.SlackBot do
 
   def handle_command(cmd, args \\ [], state \\ %{})
   def handle_command("join_event", [name], state) do
-    case Repo.get_by(Event, name: name) do
+    event = Event
+            |> preload(:food_sources)
+            |> where(name: ^name)
+            |> limit(1)
+            |> Repo.one
+
+    case event do
       nil ->
         {
           "Sorry. Can't find event: #{name}",
           state
         }
+
       event ->
+        food_sources_text = event.food_sources
+                            |> Enum.map(&(" - <#{&1.url}|#{&1.name}>"))
+                            |> Enum.join("\n")
+
         {
-          "You joined event: " <> name,
+          """
+          You joined event "#{name}". You can order from:
+          #{food_sources_text}
+          """,
           Map.put(state, :event, event)
         }
     end

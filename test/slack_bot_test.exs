@@ -2,10 +2,22 @@ defmodule FoodBot.SlackBotTest do
   use ExUnit.Case
   doctest FoodBot.SlackBot
 
-  alias FoodBot.{SlackBot, Repo, Event}
+  alias FoodBot.{SlackBot, Repo, Event, FoodSource}
+
 
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
+
+    _japaneseCanteen = Repo.insert! %FoodSource{name: "JapaneseCanteen"}
+    sushiPlace      = Repo.insert! %FoodSource{name: "SushiPlace"}
+    misterLasagna   = Repo.insert! %FoodSource{name: "MisterLasagna"}
+
+    techLunch = Repo.insert! %Event{
+      name: "TechLunch",
+      food_sources: [sushiPlace, misterLasagna]
+    }
+
+    [techLunch: techLunch]
   end
 
   test "list available commands on unknown command" do
@@ -14,17 +26,19 @@ defmodule FoodBot.SlackBotTest do
     }
   end
 
-  test "join_event command: adds event to state" do
-    event = Repo.insert! %Event{name: "TechLunch"}
-
+  test "join_event command: adds event to state", context do
     assert SlackBot.handle_command("join_event", ["TechLunch"]) == {
-      "You joined event: TechLunch", %{event: event}
+      """
+      You joined event "TechLunch". You can order from:
+       - <|SushiPlace>
+       - <|MisterLasagna>
+      """, %{event: context[:techLunch]}
     }
   end
 
   test "join_event command: event not found" do
-    assert SlackBot.handle_command("join_event", ["TechLunch"]) == {
-      "Sorry. Can't find event: TechLunch", %{}
+    assert SlackBot.handle_command("join_event", ["DataLunch"]) == {
+      "Sorry. Can't find event: DataLunch", %{}
     }
   end
 
@@ -34,14 +48,8 @@ defmodule FoodBot.SlackBotTest do
     }
   end
 
-  def join_tech_lunch_event do
-    Repo.insert! %Event{name: "TechLunch"}
-    {_, state} = SlackBot.handle_command("join_event", ["TechLunch"])
-    state
-  end
-
   test "current_event command: event in state" do
-    state = join_tech_lunch_event()
+    {_, state} = SlackBot.handle_command("join_event", ["TechLunch"])
 
     assert SlackBot.handle_command("current_event", [], state) == {
       "You are ordering for event: TechLunch", state
