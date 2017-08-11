@@ -28,8 +28,18 @@ defmodule FoodBot.SlackBot do
 
     case event do
       nil ->
+        latest_events_text = Event
+                             |> order_by(desc: :inserted_at)
+                             |> limit(5)
+                             |> Repo.all
+                             |> Enum.map(&(" - #{&1.name}"))
+                             |> Enum.join("\n")
+
         {
-          "Sorry. Can't find event: #{name}",
+          """
+          Sorry, I can't find event "#{name}". Is it one of these:
+          #{latest_events_text}
+          """,
           state
         }
 

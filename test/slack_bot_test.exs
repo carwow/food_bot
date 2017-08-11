@@ -38,7 +38,11 @@ defmodule FoodBot.SlackBotTest do
 
   test "join_event command: event not found" do
     assert SlackBot.handle_command("join_event", ["DataLunch"]) == {
-      "Sorry. Can't find event: DataLunch", %{}
+      """
+      Sorry, I can't find event "DataLunch". Is it one of these:
+       - TechLunch
+      """,
+      %{}
     }
   end
 
