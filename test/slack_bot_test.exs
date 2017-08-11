@@ -9,8 +9,16 @@ defmodule FoodBot.SlackBotTest do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
 
     _japaneseCanteen = Repo.insert! %FoodSource{name: "JapaneseCanteen"}
-    sushiPlace      = Repo.insert! %FoodSource{name: "SushiPlace"}
-    misterLasagna   = Repo.insert! %FoodSource{name: "MisterLasagna"}
+
+    sushiPlace = Repo.insert! %FoodSource{
+      name: "SushiPlace",
+      url: "http://www.youmesushi.com/"
+    }
+
+    misterLasagna = Repo.insert! %FoodSource{
+      name: "MisterLasagna",
+      url: "http://misterlasagna.co.uk/our-menu#main-lasagna-dishes"
+    }
 
     techLunch = Repo.insert! %Event{
       name: "TechLunch",
@@ -30,8 +38,8 @@ defmodule FoodBot.SlackBotTest do
     assert SlackBot.handle_command("join_event", ["TechLunch"]) == {
       """
       You joined event "TechLunch". You can order from:
-       - <|SushiPlace>
-       - <|MisterLasagna>
+       - SushiPlace: http://www.youmesushi.com/
+       - MisterLasagna: http://misterlasagna.co.uk/our-menu#main-lasagna-dishes
       """, %{event: context[:techLunch]}
     }
   end

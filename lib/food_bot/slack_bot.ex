@@ -47,7 +47,7 @@ defmodule FoodBot.SlackBot do
 
       event ->
         food_sources_text = event.food_sources
-                            |> Enum.map(&(" - <#{&1.url}|#{&1.name}>"))
+                            |> Enum.map(&(" - #{&1.name}: #{&1.url}"))
                             |> Enum.join("\n")
 
         {
