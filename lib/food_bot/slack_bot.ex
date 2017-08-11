@@ -9,6 +9,7 @@ defmodule FoodBot.SlackBot do
   end
 
   def handle_event(%{user: me}, %{me: %{id: me}}, state), do: {:ok, state}
+  def handle_event(%{subtype: "bot_message"}, _, state), do: {:ok, state}
   def handle_event(message = %{type: "message"}, slack, state) do
     [cmd | args] = String.split message.text
     {reply, new_state} = cmd
