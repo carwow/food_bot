@@ -75,6 +75,21 @@ defmodule FoodBot.SlackBot do
         }
     end
   end
+  def handle_command("order", nil, state) do
+    { "Sorry, you didn't provide an order.", state }
+  end
+  def handle_command("order", _text, _state = %{event: _event}) do
+    raise "TODO"
+  end
+  def handle_command("order", _, state) do
+    {
+      """
+      Sorry, you need to join an event first. Is it one of these?
+      #{latest_events_text()}
+      """,
+      state
+    }
+  end
   def handle_command(_, _, state) do
     {
       "Available commands are `join_event` and `current_event`",

@@ -64,4 +64,21 @@ defmodule FoodBot.SlackBotTest do
       %{}
     }
   end
+
+  test "order command: no event joined" do
+    assert SlackBot.handle_command("order", "Regular Funghi Lasagna") == {
+      """
+      Sorry, you need to join an event first. Is it one of these?
+       - Design Lunch
+       - Tech Lunch
+      """,
+      %{}
+    }
+  end
+
+  test "order command: no order" do
+    assert SlackBot.handle_command("order") == {
+      "Sorry, you didn't provide an order.", %{}
+    }
+  end
 end
