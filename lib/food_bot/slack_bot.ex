@@ -75,18 +75,6 @@ defmodule FoodBot.SlackBot do
         }
     end
   end
-  def handle_command("current_event", _, state = %{event: event}) do
-    {
-      "You are ordering for event: " <> event.name,
-      state
-    }
-  end
-  def handle_command("current_event", _, state) do
-    {
-      "You haven't joined an event yet.",
-      state
-    }
-  end
   def handle_command(_, _, state) do
     {
       "Available commands are `join_event` and `current_event`",

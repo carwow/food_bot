@@ -64,18 +64,4 @@ defmodule FoodBot.SlackBotTest do
       %{}
     }
   end
-
-  test "current_event command: event in state" do
-    {_, state} = SlackBot.handle_command("join_event", "Tech Lunch")
-
-    assert SlackBot.handle_command("current_event", [], state) == {
-      "You are ordering for event: Tech Lunch", state
-    }
-  end
-
-  test "current_event command: no event in state" do
-    assert SlackBot.handle_command("current_event") == {
-      "You haven't joined an event yet.", %{}
-    }
-  end
 end
