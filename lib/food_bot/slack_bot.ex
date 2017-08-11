@@ -28,7 +28,7 @@ defmodule FoodBot.SlackBot do
       event ->
         {
           "You joined event: " <> name,
-          Map.put(state, :current_event, event)
+          Map.put(state, :event, event)
         }
     end
   end
@@ -38,9 +38,9 @@ defmodule FoodBot.SlackBot do
       state
     }
   end
-  def handle_command("current_event", _, state = %{current_event: current_event}) do
+  def handle_command("current_event", _, state = %{event: event}) do
     {
-      "You are ordering for event: " <> current_event.name,
+      "You are ordering for event: " <> event.name,
       state
     }
   end

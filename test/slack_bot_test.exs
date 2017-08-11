@@ -18,7 +18,7 @@ defmodule FoodBot.SlackBotTest do
     event = Repo.insert! %Event{name: "TechLunch"}
 
     assert SlackBot.handle_command("join_event", ["TechLunch"]) == {
-      "You joined event: TechLunch", %{current_event: event}
+      "You joined event: TechLunch", %{event: event}
     }
   end
 
