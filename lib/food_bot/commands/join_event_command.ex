@@ -5,6 +5,7 @@ defmodule FoodBot.JoinEventCommand do
 
   def name, do: "join_event"
 
+  def execute(name, state \\ %{})
   def execute(nil, state) do
     {
       """
