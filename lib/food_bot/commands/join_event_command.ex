@@ -15,34 +15,36 @@ defmodule FoodBot.JoinEventCommand do
     }
   end
   def execute(name, state) do
-    event = Event
-            |> preload(:food_sources)
-            |> where(name: ^name)
-            |> limit(1)
-            |> Repo.one
+    Event
+    |> preload(:food_sources)
+    |> where(name: ^name)
+    |> limit(1)
+    |> Repo.one
+    |> execute_with_event(name, state)
+  end
 
-    case event do
-      nil ->
-        {
-          """
-          Sorry, I can't find event "#{name}". Is it one of these?
-          #{latest_events_text()}
-          """,
-          state
-        }
+  defp execute_with_event(nil, name, state) do
+    {
+      """
+      Sorry, I can't find event "#{name}". Is it one of these?
+      #{latest_events_text()}
+      """,
+      state
+    }
+  end
+  defp execute_with_event(event, name, state) do
+    {
+      """
+      You joined event "#{name}". You can order from:
+      #{food_sources_text(event)}
+      """,
+      Map.put(state, :event, event)
+    }
+  end
 
-      event ->
-        food_sources_text = event.food_sources
-                            |> Enum.map(&(" - #{&1.name}: #{&1.url}"))
-                            |> Enum.join("\n")
-
-        {
-          """
-          You joined event "#{name}". You can order from:
-          #{food_sources_text}
-          """,
-          Map.put(state, :event, event)
-        }
-    end
+  defp food_sources_text(event) do
+    event.food_sources
+    |> Enum.map(&(" - #{&1.name}: #{&1.url}"))
+    |> Enum.join("\n")
   end
 end
