@@ -35,11 +35,8 @@ defmodule FoodBot.SlackBot do
   def handle_command("order", text, state) do
     FoodBot.OrderCommand.execute(text, state)
   end
-  def handle_command(_, _, state) do
-    {
-      "Available commands are `join_event` and `current_event`",
-      state
-    }
+  def handle_command(_, text, state) do
+    FoodBot.NotFoundCommand.execute(text, state)
   end
 
 end

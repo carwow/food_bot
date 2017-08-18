@@ -4,9 +4,5 @@ defmodule FoodBot.SlackBotTest do
 
   alias FoodBot.SlackBot
 
-  test "list available commands on unknown command" do
-    assert SlackBot.handle_command("unknown") == {
-      "Available commands are `join_event` and `current_event`", %{}
-    }
-  end
+  # TODO: test handle_event function
 end
