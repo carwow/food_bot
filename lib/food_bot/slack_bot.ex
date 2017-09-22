@@ -15,6 +15,7 @@ defmodule FoodBot.SlackBot do
 
     {reply, new_state} = cmd
                        |> String.downcase
+                       |> find_command
                        |> handle_command(
                          Enum.at(rest, 0),
                          state[message.user] || %{user: slack.users[message.user]}
@@ -26,17 +27,16 @@ defmodule FoodBot.SlackBot do
   end
   def handle_event(_, _, state), do: {:ok, state}
 
+  @commands %{
+    join_event: FoodBot.JoinEventCommand,
+    order: FoodBot.OrderCommand,
+  }
 
-  def handle_command(cmd, rest \\ nil, state \\ %{})
-
-  def handle_command("join_event", name, state) do
-    FoodBot.JoinEventCommand.execute(name, state)
-  end
-  def handle_command("order", text, state) do
-    FoodBot.OrderCommand.execute(text, state)
-  end
-  def handle_command(_, text, state) do
-    FoodBot.NotFoundCommand.execute(text, state)
+  def find_command(cmd) do
+    @commands[String.to_atom(cmd)] || FoodBot.NotFoundCommand
   end
 
+  def handle_command(cmd, rest \\ nil, state \\ %{}) do
+    cmd.execute(rest, state)
+  end
 end

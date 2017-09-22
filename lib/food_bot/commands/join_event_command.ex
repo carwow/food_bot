@@ -3,8 +3,6 @@ defmodule FoodBot.JoinEventCommand do
   import FoodBot.CommandHelpers
   import Ecto.Query
 
-  def name, do: "join_event"
-
   def execute(name, state \\ %{})
   def execute(nil, state) do
     {

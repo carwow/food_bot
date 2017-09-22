@@ -2,8 +2,6 @@ defmodule FoodBot.OrderCommand do
   alias FoodBot.{Repo, Order}
   import FoodBot.CommandHelpers
 
-  def name, do: "join_event"
-
   def execute(name, state \\ %{})
   def execute(nil, state) do
     { "Sorry, you didn't provide an order.", state }
